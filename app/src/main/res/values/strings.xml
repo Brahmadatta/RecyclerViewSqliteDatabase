@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LocalDatabaseExample</string>
+    <string name="id">id</string>
+</resources>
