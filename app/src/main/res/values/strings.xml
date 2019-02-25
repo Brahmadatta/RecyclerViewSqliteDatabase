@@ -5,4 +5,5 @@
     <string name="open_github_data">Open Github Data</string>
     <string name="github_database_data">Github Database Data</string>
     <string name="movies_database_data">Movies Database Data</string>
+    <string name="todo">TODO</string>
 </resources>
