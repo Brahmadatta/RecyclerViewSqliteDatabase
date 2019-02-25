@@ -66,7 +66,7 @@ public class SqliteDataActivity extends AppCompatActivity implements View.OnClic
         });
 
 
-        //getTheMoviesData();
+        getTheMoviesData();
 
     }
 
@@ -111,6 +111,7 @@ public class SqliteDataActivity extends AppCompatActivity implements View.OnClic
                         recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
                         recyclerViewSqlite.setHasFixedSize(true);
                         recyclerViewSqlite.setAdapter(moviesAdapter);
+                        moviesAdapter.notifyDataSetChanged();
                     } while (cursor.moveToNext());
                 }
 
