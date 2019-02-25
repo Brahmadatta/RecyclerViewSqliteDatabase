@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".GitHubDatabaseActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".GitHubListActivity" />
         <activity android:name=".DataDecidingActivity">
             <intent-filter>

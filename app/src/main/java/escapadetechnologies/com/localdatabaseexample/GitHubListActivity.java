@@ -1,5 +1,7 @@
 package escapadetechnologies.com.localdatabaseexample;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,9 @@ public class GitHubListActivity extends AppCompatActivity {
 
     RecyclerView githubRecyclerView;
 
+    DatabaseHandler databaseHandler;
+
+
     public static final String GITHUB_URL = "https://api.github.com/repositories?since=1";
 
     ArrayList<HashMap<String,String>> githubnArrayaList;
@@ -35,6 +40,8 @@ public class GitHubListActivity extends AppCompatActivity {
         githubRecyclerView = findViewById(R.id.githubRecyclerView);
 
         githubnArrayaList = new ArrayList<>();
+
+        databaseHandler = new DatabaseHandler(this);
 
         getGithubData();
 
@@ -74,6 +81,19 @@ public class GitHubListActivity extends AppCompatActivity {
                         hashMap.put("type",type);
 
 
+                        if (jsonArray.length() > databaseHandler.getAllGithubData().size()){
+
+                            ContentValues contentValues = new ContentValues();
+                            SQLiteDatabase database = databaseHandler.getWritableDatabase();
+
+                            contentValues.put(DatabaseHandler.GITHUB_ID,id);
+                            contentValues.put(DatabaseHandler.NAME,name);
+                            contentValues.put(DatabaseHandler.FULL_NAME,fullname);
+                            contentValues.put(DatabaseHandler.TYPE,type);
+                            contentValues.put(DatabaseHandler.AVATAR_URL,avatar_url);
+
+                            database.insert(DatabaseHandler.TABLE_GITHUB_NAME,null,contentValues);
+                        }
                         githubnArrayaList.add(hashMap);
 
                     }

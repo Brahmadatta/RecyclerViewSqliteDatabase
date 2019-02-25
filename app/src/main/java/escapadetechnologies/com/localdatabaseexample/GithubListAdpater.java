@@ -1,6 +1,7 @@
 package escapadetechnologies.com.localdatabaseexample;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -63,6 +64,14 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
             fullname = itemView.findViewById(R.id.fullName);
             type = itemView.findViewById(R.id.type);
             avatarUrl = itemView.findViewById(R.id.avatar_url);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(new Intent(v.getContext(),GitHubDatabaseActivity.class));
+                }
+            });
 
         }
     }
