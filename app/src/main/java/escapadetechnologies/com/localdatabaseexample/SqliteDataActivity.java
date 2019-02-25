@@ -75,14 +75,31 @@ public class SqliteDataActivity extends AppCompatActivity implements View.OnClic
 
         SQLiteDatabase db = databaseHandler.getReadableDatabase();
 
-        Cursor cursor = databaseHandler.searchDb(search);
+       /* String query = "SELECT * FROM " + DatabaseHandler.TABLE_NAME + " WHERE " + DatabaseHandler.TITLE + " LIKE '" + search + "%'";
 
-        try{
+        Cursor cursor = db.rawQuery(query, null);*/
 
-            if (cursor.getCount() != 0) {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHandler.TABLE_NAME + " WHERE " + DatabaseHandler.TITLE + " LIKE '%"+search.trim()+"%'", null);
 
-                if (cursor.moveToFirst()) {
-                    /*do {
+
+
+            try {
+                //cursor = db.query(DatabaseHandler.TABLE_NAME, new String[]{DatabaseHandler.TITLE, DatabaseHandler.OVERVIEW, DatabaseHandler.POPULARITY}, DatabaseHandler.TABLE_NAME + " MATCH ?", new String[]{search}, null, null, null, null);
+                sqliteMoviesList.clear();
+                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                        /*int iUsername = cursor.getColumnIndex(KEY_USERNAME);
+                        int iFullname = cursor.getColumnIndex(KEY_FULLNAME);
+                        int iEmail = cursor.getColumnIndex(KEY_EMAIL);*/
+
+                    do {
+                            /*results.add(
+                                    new String(
+                                            "Username: "+cursor.getString(iUsername) +
+                                                    ", Fullname: "+cursor.getString(iFullname) +
+                                                    ", Email: "+cursor.getString(iEmail)
+                                    )
+                            );*/
+
                         HashMap<String, String> hashMap = new HashMap<>();
                         hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
                         hashMap.put(DatabaseHandler.TITLE, cursor.getString(cursor.getColumnIndex(DatabaseHandler.TITLE)));
@@ -94,25 +111,42 @@ public class SqliteDataActivity extends AppCompatActivity implements View.OnClic
                         recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
                         recyclerViewSqlite.setHasFixedSize(true);
                         recyclerViewSqlite.setAdapter(moviesAdapter);
-                    }*/ while (cursor.moveToNext()){
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
-                        hashMap.put(DatabaseHandler.TITLE, cursor.getString(cursor.getColumnIndex(DatabaseHandler.TITLE)));
-                        hashMap.put(DatabaseHandler.OVERVIEW, cursor.getString(cursor.getColumnIndex(DatabaseHandler.OVERVIEW)));
-                        hashMap.put(DatabaseHandler.POPULARITY, cursor.getString(cursor.getColumnIndex(DatabaseHandler.POPULARITY)));
-                        hashMap.put(DatabaseHandler.POSTER_PATH, cursor.getString(cursor.getColumnIndex(DatabaseHandler.POSTER_PATH)));
-                        sqliteMoviesList.add(hashMap);
-                        moviesAdapter = new MoviesAdapter(sqliteMoviesList, this);
-                        recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
-                        recyclerViewSqlite.setHasFixedSize(true);
-                        recyclerViewSqlite.setAdapter(moviesAdapter);
-                    }
-                    cursor.close();
+                    } while (cursor.moveToNext());
                 }
+
+                /*if (cursor.moveToFirst()) {
+                    do {
+                        HashMap<String, String> hashMap = new HashMap<>();
+                        hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
+                        hashMap.put(DatabaseHandler.TITLE, cursor.getString(cursor.getColumnIndex(DatabaseHandler.TITLE)));
+                        hashMap.put(DatabaseHandler.OVERVIEW, cursor.getString(cursor.getColumnIndex(DatabaseHandler.OVERVIEW)));
+                        hashMap.put(DatabaseHandler.POPULARITY, cursor.getString(cursor.getColumnIndex(DatabaseHandler.POPULARITY)));
+                        hashMap.put(DatabaseHandler.POSTER_PATH, cursor.getString(cursor.getColumnIndex(DatabaseHandler.POSTER_PATH)));
+                        sqliteMoviesList.add(hashMap);
+                        moviesAdapter = new MoviesAdapter(sqliteMoviesList, this);
+                        recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
+                        recyclerViewSqlite.setHasFixedSize(true);
+                        recyclerViewSqlite.setAdapter(moviesAdapter);
+                    }while (cursor.moveToNext());*/
+
+                    /*while (cursor.moveToNext()){
+                        HashMap<String, String> hashMap = new HashMap<>();
+                        hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
+                        hashMap.put(DatabaseHandler.TITLE, cursor.getString(cursor.getColumnIndex(DatabaseHandler.TITLE)));
+                        hashMap.put(DatabaseHandler.OVERVIEW, cursor.getString(cursor.getColumnIndex(DatabaseHandler.OVERVIEW)));
+                        hashMap.put(DatabaseHandler.POPULARITY, cursor.getString(cursor.getColumnIndex(DatabaseHandler.POPULARITY)));
+                        hashMap.put(DatabaseHandler.POSTER_PATH, cursor.getString(cursor.getColumnIndex(DatabaseHandler.POSTER_PATH)));
+                        sqliteMoviesList.add(hashMap);
+                        moviesAdapter = new MoviesAdapter(sqliteMoviesList, this);
+                        recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
+                        recyclerViewSqlite.setHasFixedSize(true);
+                        recyclerViewSqlite.setAdapter(moviesAdapter);
+                    }*/
+                cursor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
 
         /*String query = "SELECT * FROM "+ DatabaseHandler.TABLE_NAME + " WHERE " + DatabaseHandler.TITLE + " LIKE " + ""+ search +"";
 
@@ -157,14 +191,14 @@ public class SqliteDataActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void getTheMoviesData() {
+        private void getTheMoviesData () {
 
-        ArrayList arrayList = databaseHandler.getAllMovieData();
+            ArrayList arrayList = databaseHandler.getAllMovieData();
 
-        MoviesAdapter moviesAdapter = new MoviesAdapter(arrayList,this);
-        recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewSqlite.setHasFixedSize(true);
-        recyclerViewSqlite.setAdapter(moviesAdapter);
+            MoviesAdapter moviesAdapter = new MoviesAdapter(arrayList, this);
+            recyclerViewSqlite.setLayoutManager(new LinearLayoutManager(this));
+            recyclerViewSqlite.setHasFixedSize(true);
+            recyclerViewSqlite.setAdapter(moviesAdapter);
 
         /*SQLiteDatabase data = databaseHandler.getReadableDatabase();
         //Cursor cursor = data.rawQuery("SELECT * FROM " + DatabaseHandler.TABLE_NAME,null);
@@ -226,7 +260,8 @@ public class SqliteDataActivity extends AppCompatActivity implements View.OnClic
         }
         cursor.close();
         db.close();*/
-    }
+        }
+
 
     @Override
     public void onClick(View v) {

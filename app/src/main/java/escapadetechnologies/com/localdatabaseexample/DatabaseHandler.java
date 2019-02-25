@@ -102,8 +102,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         " LIKE" + "'%" + query + "%' OR " + OVERVIEW + " LIKE" + "'%" + query + "%' OR " + MOVIE_ID + " LIKE" + "'%",
                 null, null, null, null, null);*/
 
-        String data = "SELECT * FROM " + DatabaseHandler.TABLE_NAME + " WHERE " + DatabaseHandler.TITLE + " OR " + DatabaseHandler.OVERVIEW + " like "+"'"+query+"'";
-        Cursor cursor = db.rawQuery(data,null);
-        return cursor;
+        //String data = "SELECT * FROM " + DatabaseHandler.TABLE_NAME + " WHERE " + DatabaseHandler.TITLE + " OR " + DatabaseHandler.OVERVIEW + " like "+"'"+query+"'";
+        String data = "SELECT * FROM " +DatabaseHandler.TABLE_NAME + " WHERE " + DatabaseHandler.TITLE + " like "+"'"+query+"'";
+        return db.rawQuery(data,null);
     }
 }
