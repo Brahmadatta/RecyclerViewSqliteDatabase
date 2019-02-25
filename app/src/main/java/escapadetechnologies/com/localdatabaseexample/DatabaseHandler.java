@@ -4,8 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,9 +34,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_GITHUB_NAME = "GITHUB";
 
     //github table column names
-    public static final String GITHUB_ID = "id";
+    public static final String GITHUB_ID = "github_id";
     public static final String NAME = "name";
-    public static final String FULL_NAME = "fullname";
+    public static final String FULL_NAME = "full_name";
     public static final String AVATAR_URL = "avatar_url";
     public static final String TYPE = "type";
 
@@ -55,7 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, 2);
+        super(context, DATABASE_NAME, null, 5);
     }
 
     @Override
@@ -79,7 +82,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + GITHUB_ID + " TEXT,"
                 + NAME + " TEXT,"
                 + FULL_NAME + " TEXT,"
-                + AVATAR_URL + " BLOB"
+                + TYPE + " TEXT,"
+                + AVATAR_URL + " TEXT"
                 + ")";
 
         db.execSQL(GITHUB_TABLE);
@@ -91,6 +95,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GITHUB_NAME);
     }
 
 
@@ -125,17 +130,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ArrayList arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GITHUB_NAME,null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHandler.TABLE_GITHUB_NAME,null);
         if (cursor.moveToFirst()){
             do {
 
                 HashMap<String,String> hashMap = new HashMap<>();
-                hashMap.put(ID,cursor.getString(cursor.getColumnIndex(ID)));
+                hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
+                hashMap.put(GITHUB_ID,cursor.getString(cursor.getColumnIndex(GITHUB_ID)));
                 hashMap.put(NAME,cursor.getString(cursor.getColumnIndex(NAME)));
                 hashMap.put(FULL_NAME,cursor.getString(cursor.getColumnIndex(FULL_NAME)));
                 hashMap.put(TYPE,cursor.getString(cursor.getColumnIndex(TYPE)));
-                byte[] avatar = cursor.getBlob(cursor.getColumnIndex(AVATAR_URL));
-                hashMap.put(AVATAR_URL, android.util.Base64.encodeToString(avatar, Base64.DEFAULT));
+
+
+                //byte[] avatar = cursor.getBlob(cursor.getColumnIndex(AVATAR_URL));
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // Could be Bitmap.CompressFormat.PNG or Bitmap.CompressFormat.WEBP
+                byte[] bai = baos.toByteArray();*/
+                hashMap.put(AVATAR_URL, cursor.getString(cursor.getColumnIndex(AVATAR_URL)));
                 arrayList.add(hashMap);
 
             }while (cursor.moveToNext());

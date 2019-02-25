@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class DataDecidingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button openMovieData,openGithubData;
+    Button openMovieData,openGithubData,githubdataseData,moviesDatabaseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,12 @@ public class DataDecidingActivity extends AppCompatActivity implements View.OnCl
 
         openMovieData = findViewById(R.id.openMovieData);
         openGithubData = findViewById(R.id.openGithubData);
+        githubdataseData = findViewById(R.id.github_databasedata);
+        moviesDatabaseData = findViewById(R.id.movies_database_data);
         openMovieData.setOnClickListener(this);
         openGithubData.setOnClickListener(this);
+        moviesDatabaseData.setOnClickListener(this);
+        githubdataseData.setOnClickListener(this);
 
     }
 
@@ -33,6 +37,14 @@ public class DataDecidingActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.openGithubData:
                 startActivity(new Intent(this,GitHubListActivity.class));
+                break;
+
+            case R.id.movies_database_data:
+                startActivity(new Intent(this,SqliteDataActivity.class));
+                break;
+
+            case R.id.github_databasedata:
+                startActivity(new Intent(this,GitHubDatabaseActivity.class));
                 break;
         }
     }

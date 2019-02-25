@@ -3,4 +3,6 @@
     <string name="id">id</string>
     <string name="open_movie_data">Open Movie Data</string>
     <string name="open_github_data">Open Github Data</string>
+    <string name="github_database_data">Github Database Data</string>
+    <string name="movies_database_data">Movies Database Data</string>
 </resources>

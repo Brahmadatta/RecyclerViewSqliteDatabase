@@ -22,4 +22,18 @@
         android:id="@+id/openGithubData"
         android:text="@string/open_github_data"/>
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/github_databasedata"
+        android:text="@string/github_database_data"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/movies_database_data"
+        android:text="@string/movies_database_data"/>
+
 </LinearLayout>
