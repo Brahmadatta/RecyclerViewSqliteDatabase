@@ -20,14 +20,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.GithubViewHolder>{
@@ -58,7 +51,7 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
         githubViewHolder.type.setText(hashMap.get("type"));
 
 
-        Picasso.get()
+        /*Picasso.get()
                 .load(hashMap.get("avatar_url"))
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(githubViewHolder.avatarUrl, new Callback() {
@@ -80,7 +73,7 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
                                 .into(githubViewHolder.avatarUrl);
 
                     }
-                });
+                });*/
 
 
        /* if (!checkInternetConnection(context)){
@@ -115,7 +108,7 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
 
     public class GithubViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView avatarUrl;
+        //ImageView avatarUrl;
         TextView id,name,fullname,type;
 
         public GithubViewHolder(@NonNull View itemView) {
@@ -125,13 +118,20 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
             name = itemView.findViewById(R.id.name);
             fullname = itemView.findViewById(R.id.fullName);
             type = itemView.findViewById(R.id.type);
-            avatarUrl = itemView.findViewById(R.id.avatar_url);
+            //avatarUrl = itemView.findViewById(R.id.avatar_url);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    v.getContext().startActivity(new Intent(v.getContext(),GitHubDatabaseActivity.class));
+                    /*v.getContext().startActivity(new Intent(v.getContext(),GitHubDatabaseActivity.class));*/
+                    /*Intent intent = new Intent(v.getContext(),GitHubDatabaseActivity.class);
+                    intent.putExtra("id",id.getText().toString());
+                    v.getContext().startActivity(intent);*/
+
+                    Intent intent = new Intent(v.getContext(),GitHubDatabaseActivity.class);
+                    intent.putExtra("id",id.getText().toString());
+                    v.getContext().startActivity(intent);
                 }
             });
 

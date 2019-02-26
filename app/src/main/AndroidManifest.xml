@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".GithubFinalActivity"></activity>
+        <activity android:name=".GithubReposUrlActivity"></activity>
         <activity android:name=".GitHubDatabaseActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".GitHubListActivity" />
