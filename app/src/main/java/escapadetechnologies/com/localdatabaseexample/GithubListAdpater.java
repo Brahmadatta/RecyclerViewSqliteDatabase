@@ -49,6 +49,7 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
         githubViewHolder.name.setText(hashMap.get("name"));
         githubViewHolder.fullname.setText(hashMap.get("full_name"));
         githubViewHolder.type.setText(hashMap.get("type"));
+        githubViewHolder.repos_url.setText(hashMap.get("repos_url"));
 
 
         /*Picasso.get()
@@ -109,7 +110,7 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
     public class GithubViewHolder extends RecyclerView.ViewHolder{
 
         //ImageView avatarUrl;
-        TextView id,name,fullname,type;
+        TextView id,name,fullname,type,repos_url;
 
         public GithubViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -118,6 +119,7 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
             name = itemView.findViewById(R.id.name);
             fullname = itemView.findViewById(R.id.fullName);
             type = itemView.findViewById(R.id.type);
+            repos_url = itemView.findViewById(R.id.repos_url);
             //avatarUrl = itemView.findViewById(R.id.avatar_url);
 
 
@@ -129,7 +131,8 @@ public class GithubListAdpater extends RecyclerView.Adapter<GithubListAdpater.Gi
                     intent.putExtra("id",id.getText().toString());
                     v.getContext().startActivity(intent);*/
 
-                    Intent intent = new Intent(v.getContext(),GitHubDatabaseActivity.class);
+                    Intent intent = new Intent(v.getContext(),GithubReposUrlActivity.class);
+                    intent.putExtra("repos_url",repos_url.getText().toString());
                     intent.putExtra("id",id.getText().toString());
                     v.getContext().startActivity(intent);
                 }

@@ -24,6 +24,7 @@
 
 
     <Button
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/github_databasedata"
@@ -31,6 +32,7 @@
 
 
     <Button
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/movies_database_data"

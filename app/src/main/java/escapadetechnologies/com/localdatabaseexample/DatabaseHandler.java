@@ -39,6 +39,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String FULL_NAME = "full_name";
     public static final String AVATAR_URL = "avatar_url";
     public static final String TYPE = "type";
+    public static final String REPOS_URL = "repos_url";
+
+
+    //github repos table name
+    public static final String GITHUB_REPOS_TABLE = "GITHUB_REPOS";
+
+    //github repos column names;
+    public static final String GITHUB_REPOS_ID = "github_repos_id";
 
 
 
@@ -58,7 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, 5);
+        super(context, DATABASE_NAME, null, 6);
     }
 
     @Override
@@ -79,15 +87,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String GITHUB_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_GITHUB_NAME + "("
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + GITHUB_ID + " TEXT,"
+                + GITHUB_ID + " TEXT UNIQUE,"
                 + NAME + " TEXT,"
                 + FULL_NAME + " TEXT,"
                 + TYPE + " TEXT,"
-                + AVATAR_URL + " TEXT"
+                + AVATAR_URL + " TEXT,"
+                + REPOS_URL + " TEXT"
                 + ")";
 
         db.execSQL(GITHUB_TABLE);
 
+
+        String GITHUB_REPOS = "CREATE TABLE IF NOT EXISTS " + GITHUB_REPOS_TABLE + "("
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + GITHUB_REPOS_ID + " INTEGER UNIQUE,"
+                + GITHUB_ID + " INTEGER,"
+                + NAME + " TEXT,"
+                + FULL_NAME + " TEXT,"
+                + TYPE + " TEXT,"
+                + AVATAR_URL + " TEXT,"
+                + REPOS_URL + " TEXT,"
+                + " FOREIGN KEY ("+GITHUB_ID+") REFERENCES "+DatabaseHandler.TABLE_GITHUB_NAME+ " ("+GITHUB_ID+"))";
+                //+ " FOREIGN KEY ("+GITHUB_ID+") REFERENCES "+GITHUB_TABLE+" ("+GITHUB_ID+"));";
+
+        db.execSQL(GITHUB_REPOS);
 
     }
 
@@ -96,6 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GITHUB_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + GITHUB_REPOS_TABLE);
     }
 
 
@@ -140,13 +164,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 hashMap.put(NAME,cursor.getString(cursor.getColumnIndex(NAME)));
                 hashMap.put(FULL_NAME,cursor.getString(cursor.getColumnIndex(FULL_NAME)));
                 hashMap.put(TYPE,cursor.getString(cursor.getColumnIndex(TYPE)));
-
-
                 //byte[] avatar = cursor.getBlob(cursor.getColumnIndex(AVATAR_URL));
                 /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // Could be Bitmap.CompressFormat.PNG or Bitmap.CompressFormat.WEBP
                 byte[] bai = baos.toByteArray();*/
                 hashMap.put(AVATAR_URL, cursor.getString(cursor.getColumnIndex(AVATAR_URL)));
+                hashMap.put(REPOS_URL,cursor.getString(cursor.getColumnIndex(REPOS_URL)));
                 arrayList.add(hashMap);
 
             }while (cursor.moveToNext());
@@ -155,6 +178,70 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return arrayList;
 
+    }
+
+
+    public ArrayList getGithubReposDataById(String id){
+
+        ArrayList arrayList = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHandler.GITHUB_REPOS_TABLE + " WHERE " + GITHUB_REPOS_ID + " = " + id,null);
+
+        if (cursor.moveToFirst()){
+            do {
+                HashMap<String,String> hashMap = new HashMap<>();
+                hashMap.put(DatabaseHandler.ID,cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
+                hashMap.put(GITHUB_REPOS_ID,cursor.getString(cursor.getColumnIndex(DatabaseHandler.GITHUB_REPOS_ID)));
+                hashMap.put(GITHUB_ID,cursor.getString(cursor.getColumnIndex(GITHUB_ID)));
+                hashMap.put(NAME,cursor.getString(cursor.getColumnIndex(NAME)));
+                hashMap.put(FULL_NAME,cursor.getString(cursor.getColumnIndex(FULL_NAME)));
+                hashMap.put(TYPE,cursor.getString(cursor.getColumnIndex(TYPE)));
+                //byte[] avatar = cursor.getBlob(cursor.getColumnIndex(AVATAR_URL));
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // Could be Bitmap.CompressFormat.PNG or Bitmap.CompressFormat.WEBP
+                byte[] bai = baos.toByteArray();*/
+                hashMap.put(AVATAR_URL, cursor.getString(cursor.getColumnIndex(AVATAR_URL)));
+                hashMap.put(REPOS_URL,cursor.getString(cursor.getColumnIndex(REPOS_URL)));
+                arrayList.add(hashMap);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return arrayList;
+    }
+
+
+
+    public ArrayList getAllGithubReposData(){
+
+
+        ArrayList arrayList = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHandler.GITHUB_REPOS_TABLE,null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                HashMap<String,String> hashMap = new HashMap<>();
+                hashMap.put(DatabaseHandler.ID,cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
+                hashMap.put(GITHUB_REPOS_ID,cursor.getString(cursor.getColumnIndex(DatabaseHandler.GITHUB_REPOS_ID)));
+                hashMap.put(GITHUB_ID,cursor.getString(cursor.getColumnIndex(GITHUB_ID)));
+                hashMap.put(NAME,cursor.getString(cursor.getColumnIndex(NAME)));
+                hashMap.put(FULL_NAME,cursor.getString(cursor.getColumnIndex(FULL_NAME)));
+                hashMap.put(TYPE,cursor.getString(cursor.getColumnIndex(TYPE)));
+                //byte[] avatar = cursor.getBlob(cursor.getColumnIndex(AVATAR_URL));
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // Could be Bitmap.CompressFormat.PNG or Bitmap.CompressFormat.WEBP
+                byte[] bai = baos.toByteArray();*/
+                hashMap.put(AVATAR_URL, cursor.getString(cursor.getColumnIndex(AVATAR_URL)));
+                hashMap.put(REPOS_URL,cursor.getString(cursor.getColumnIndex(REPOS_URL)));
+                arrayList.add(hashMap);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return arrayList;
     }
 
     public Cursor searchDb(String query){
