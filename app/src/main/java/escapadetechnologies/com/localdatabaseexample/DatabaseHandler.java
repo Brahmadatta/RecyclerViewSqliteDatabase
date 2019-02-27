@@ -159,17 +159,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do {
 
                 HashMap<String,String> hashMap = new HashMap<>();
-                hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
-                hashMap.put(GITHUB_ID,cursor.getString(cursor.getColumnIndex(GITHUB_ID)));
-                hashMap.put(NAME,cursor.getString(cursor.getColumnIndex(NAME)));
-                hashMap.put(FULL_NAME,cursor.getString(cursor.getColumnIndex(FULL_NAME)));
-                hashMap.put(TYPE,cursor.getString(cursor.getColumnIndex(TYPE)));
+                //hashMap.put(DatabaseHandler.ID, cursor.getString(cursor.getColumnIndex(DatabaseHandler.ID)));
+                hashMap.put(DatabaseHandler.ID,cursor.getString(cursor.getColumnIndex(DatabaseHandler.GITHUB_ID)));
+                hashMap.put(DatabaseHandler.NAME,cursor.getString(cursor.getColumnIndex(DatabaseHandler.NAME)));
+                hashMap.put(DatabaseHandler.FULL_NAME,cursor.getString(cursor.getColumnIndex(DatabaseHandler.FULL_NAME)));
+                hashMap.put(DatabaseHandler.TYPE,cursor.getString(cursor.getColumnIndex(DatabaseHandler.TYPE)));
                 //byte[] avatar = cursor.getBlob(cursor.getColumnIndex(AVATAR_URL));
                 /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // Could be Bitmap.CompressFormat.PNG or Bitmap.CompressFormat.WEBP
                 byte[] bai = baos.toByteArray();*/
-                hashMap.put(AVATAR_URL, cursor.getString(cursor.getColumnIndex(AVATAR_URL)));
-                hashMap.put(REPOS_URL,cursor.getString(cursor.getColumnIndex(REPOS_URL)));
+                //hashMap.put(DatabaseHandler.AVATAR_URL, cursor.getString(cursor.getColumnIndex(DatabaseHandler.AVATAR_URL)));
+                hashMap.put(DatabaseHandler.REPOS_URL,cursor.getString(cursor.getColumnIndex(DatabaseHandler.REPOS_URL)));
                 arrayList.add(hashMap);
 
             }while (cursor.moveToNext());

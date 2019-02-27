@@ -94,7 +94,7 @@ public class GitHubListActivity extends AppCompatActivity {
                         contentValues.put(DatabaseHandler.NAME, name);
                         contentValues.put(DatabaseHandler.FULL_NAME, fullname);
                         contentValues.put(DatabaseHandler.TYPE, type);
-                        contentValues.put(DatabaseHandler.AVATAR_URL, avatar_url);
+                        contentValues.put(DatabaseHandler.REPOS_URL, repos_url);
 
                         database.insert(DatabaseHandler.TABLE_GITHUB_NAME, null, contentValues);
 
