@@ -1,7 +1,10 @@
 package escapadetechnologies.com.localdatabaseexample;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -114,7 +117,9 @@ public class GithubReposUrlActivity extends AppCompatActivity {
                         githubreposArrayList.add(hashMap);
                     }
 
-                    attachAdapter(githubreposArrayList);
+                    /*attachAdapter(githubreposArrayList);*/
+
+                    loadTheDatabasetoRecyclerView();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -154,6 +159,27 @@ public class GithubReposUrlActivity extends AppCompatActivity {
 
     }
 
+    private void loadTheDatabasetoRecyclerView() {
+
+        if (checkInternetConnection(this)) {
+
+            ArrayList arrayList = databaseHandler.getAllGithubReposData();
+            GithubListAdpater githubListAdpater = new GithubListAdpater(arrayList, this);
+            githubRepoUrlRecyclerView.setHasFixedSize(true);
+            githubRepoUrlRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            githubRepoUrlRecyclerView.setAdapter(githubListAdpater);
+        }else if (databaseHandler.getAllGithubReposData().size() != 0){
+            ArrayList arrayList = databaseHandler.getAllGithubReposData();
+            GithubListAdpater githubListAdpater = new GithubListAdpater(arrayList, this);
+            githubRepoUrlRecyclerView.setHasFixedSize(true);
+            githubRepoUrlRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            githubRepoUrlRecyclerView.setAdapter(githubListAdpater);
+        }else {
+            Toast.makeText(this, "Please Enable the Internet", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     private void attachAdapter(ArrayList<HashMap<String, String>> githubreposArrayList) {
 
         GithubListAdpater githubListAdpater = new GithubListAdpater(githubreposArrayList, this);
@@ -161,6 +187,12 @@ public class GithubReposUrlActivity extends AppCompatActivity {
         githubRepoUrlRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         githubRepoUrlRecyclerView.setAdapter(githubListAdpater);
 
+    }
+
+    private static boolean checkInternetConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }
 

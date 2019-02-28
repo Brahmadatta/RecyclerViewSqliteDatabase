@@ -1,7 +1,10 @@
 package escapadetechnologies.com.localdatabaseexample;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +49,8 @@ public class GitHubListActivity extends AppCompatActivity {
         githubnArrayaList = new ArrayList<>();
 
         databaseHandler = new DatabaseHandler(this);
+
+
 
         getGithubData();
 
@@ -102,7 +107,9 @@ public class GitHubListActivity extends AppCompatActivity {
 
                     }
 
-                    attachAdapter(githubnArrayaList);
+                    loadTheDatabasetoRecyclerView();
+
+                    /*attachAdapter(githubnArrayaList);*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -145,6 +152,26 @@ public class GitHubListActivity extends AppCompatActivity {
 
     }
 
+    private void loadTheDatabasetoRecyclerView() {
+
+        if (checkInternetConnection(this)) {
+
+            ArrayList arrayList = databaseHandler.getAllGithubData();
+            GithubListAdpater githubListAdpater = new GithubListAdpater(arrayList, this);
+            githubRecyclerView.setHasFixedSize(true);
+            githubRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            githubRecyclerView.setAdapter(githubListAdpater);
+        }else if (databaseHandler.getAllGithubData().size() != 0){
+            ArrayList arrayList = databaseHandler.getAllGithubData();
+            GithubListAdpater githubListAdpater = new GithubListAdpater(arrayList, this);
+            githubRecyclerView.setHasFixedSize(true);
+            githubRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            githubRecyclerView.setAdapter(githubListAdpater);
+        }else {
+            Toast.makeText(this, "Please enable internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void attachAdapter(ArrayList<HashMap<String, String>> githubnArrayaList) {
 
         GithubListAdpater githubListAdpater = new GithubListAdpater(githubnArrayaList, this);
@@ -152,5 +179,11 @@ public class GitHubListActivity extends AppCompatActivity {
         githubRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         githubRecyclerView.setAdapter(githubListAdpater);
 
+    }
+
+    private static boolean checkInternetConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }
